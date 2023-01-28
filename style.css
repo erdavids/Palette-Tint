@@ -1,0 +1,24 @@
+html, body {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+body {
+	background: white;
+  --min: min(100vh, 100vw);
+  --hContent: 100vh;
+  --wContent: 100vw;
+  height:100vh;
+}
+
+canvas#sketch {
+  max-width: var(--wContent);
+  max-height:var(--hContent);
+}
+
+* {
+  box-sizing: border-box;
+}
