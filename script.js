@@ -1,14 +1,15 @@
 // noprotect
+p5.disableFriendlyErrors = true
 
 var w = window.innerWidth;
 var h = window.innerHeight;
 
 const opts = {
   // Generation Details
-  overlay_color: "#ffffff",
-  overlay_opacity: 255,
-  overlay_enabled: false,
-  show_original_colors: false,
+  overlay_color: "#8489a5",
+  overlay_opacity: 100,
+  overlay_enabled: true,
+  show_original_colors: true,
   palette_input: "",
   remove_index: "",
 
@@ -19,9 +20,10 @@ const opts = {
   ],
   palette_sep:0,
 
+
+
   // // Additional Functions
   Print: () => printPalettes(),
-  Generate: () => randomize(),
   Save: () => save(),
   SourceCode: () => sourceCode(),
   Twitter: () => twitter()
@@ -68,7 +70,6 @@ function parsePalette(p) {
 }
 
 function printPalettes() {
-  console.log("Here are the colors with overlay");
 
   // Go through and get the color of each
   overlay_palettes = [];
@@ -79,18 +80,43 @@ function printPalettes() {
       column_width = w / opts.palette_list[p].length;
       for (let c = 0; c < opts.palette_list[p].length; c++) {
         current_color = get(
-          c * column_width + column_width / 2,
-          p * row_height + row_height / 2
+          c * column_width + column_width*.5,
+          p * row_height + row_height*.55
         );
+        // Draw a little check mark?
+        circle(c * column_width + column_width*.5,
+          p * row_height + row_height*.45,15)
         current_palette.push(
           rgbToHex(current_color[0], current_color[1], current_color[2])
         );
       }
       overlay_palettes.push(current_palette);
+      
     }
   }
-  print(overlay_palettes);
-  console.log("Here are the original palettes");
+  console.log("--- Palettes with Overlay ---");
+  console.log(overlay_palettes)
+
+
+
+
+
+  // Setup for clipboard
+  clip_palettes = ""
+  for (let i = 0; i < overlay_palettes.length; i++) {
+    clip_palettes += '\/\/ Palette #' + i + '\n'
+    clip_palettes += '['
+    for (let c = 0; c < overlay_palettes[i].length; c++) {
+      clip_palettes += '\'' + overlay_palettes[i][c] + '\''
+      if (c != overlay_palettes[i].length - 1) clip_palettes += ','
+    }
+    clip_palettes += '],'
+    // clip_palettes += overlay_palettes[i]
+    clip_palettes += '\n'
+  }
+  console.log(clip_palettes)
+  navigator.clipboard.writeText(clip_palettes);
+  console.log("--- Original Palettes ---");
   console.log(opts.palette_list);
 }
 
@@ -115,8 +141,7 @@ window.onload = function () {
   });
   gui.add(opts, "palette_sep", 0, 50).name("Palette Sep").step(1).onChange(randomize);
 
-  gui.add(opts, "Print").name("Log to Console");
-  gui.add(opts, "Generate").name("Refresh");
+  gui.add(opts, "Print").name("Copy to Clipboard / Log to Console");
   gui.add(opts, "Save").name("Save Image");
   var made = gui.addFolder("Made by Eric Davidson");
   made.add(opts, "Twitter");
@@ -167,7 +192,7 @@ function setup() {
       if (opts.palette_list) {
         row_height = h / opts.palette_list.length;
         for (let p = 0; p < opts.palette_list.length; p++) {
-          rect(0, p * row_height + row_height/2, w, row_height/2)
+          rect(0, p * row_height + row_height/2, w, row_height/2 - opts.palette_sep)
         }
       }
     } else {
