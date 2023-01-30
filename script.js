@@ -104,7 +104,6 @@ function printPalettes() {
   // Setup for clipboard
   clip_palettes = ""
   for (let i = 0; i < overlay_palettes.length; i++) {
-    clip_palettes += '\/\/ Palette #' + i + '\n'
     clip_palettes += '['
     for (let c = 0; c < overlay_palettes[i].length; c++) {
       clip_palettes += '\'' + overlay_palettes[i][c] + '\''
