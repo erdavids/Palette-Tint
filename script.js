@@ -24,6 +24,7 @@ const opts = {
 
   // // Additional Functions
   Print: () => printPalettes(),
+  Clear: () => clearPalettes(),
   Save: () => save(),
   SourceCode: () => sourceCode(),
   Twitter: () => twitter()
@@ -44,6 +45,11 @@ function componentToHex(c) {
 
 function rgbToHex(r, g, b) {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function clearPalettes() {
+  opts.palette_list = []
+  randomize()
 }
 
 function parsePalette(p) {
@@ -128,7 +134,6 @@ window.onload = function () {
   gui.add(opts, "overlay_enabled").name("Overlay Enabled").onChange(randomize);
   gui.add(opts, "show_original_colors").name("Show Original Colors").onChange(randomize);
   gui.add(opts, "palette_input").name("Input Palette").onFinishChange(function (v) {
-    // Add palette to list
     parsePalette(v);
     randomize();
   });
@@ -141,6 +146,7 @@ window.onload = function () {
   gui.add(opts, "palette_sep", 0, 50).name("Palette Sep").step(1).onChange(randomize);
 
   gui.add(opts, "Print").name("Copy to Clipboard / Log to Console");
+  gui.add(opts, "Clear").name("Clear Palettes")
   gui.add(opts, "Save").name("Save Image");
   var made = gui.addFolder("Made by Eric Davidson");
   made.add(opts, "Twitter");
