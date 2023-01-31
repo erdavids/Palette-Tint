@@ -55,6 +55,8 @@ function clearPalettes() {
 function parsePalette(p) {
   // Use any comma separated format for hex code?
   if (p && p.length > 0) {
+    current_color.replaceAll("[", "")
+    current_color.replaceAll("]", "")
     p_list = p.split(",");
     p_to_add = [];
     if (p_list && p_list.length > 0) {
